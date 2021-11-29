@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:meals_app/screens/categories_screen.dart';
 import 'package:meals_app/screens/category_meals_screen.dart';
 import 'package:meals_app/screens/meal_detail_screen.dart';
+import 'package:meals_app/screens/tabs_screen.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -19,7 +20,7 @@ void main() {
         headline6: TextStyle(fontSize: 20,fontFamily: 'RobotoCondensed',fontWeight: FontWeight.bold)
       ),
     ),
-    home: CategoriesScreen(),
+    home: TabsScreen(),
     routes: {'/category-meals':(ctx) => CategoryMealsScreen(),
               '/category-meals-details':(ctx) => MealDetail()},
     /*

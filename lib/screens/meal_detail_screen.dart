@@ -53,26 +53,34 @@ class MealDetail extends StatelessWidget {
               ),
             ),
             createTite(context, "Ingerdients"),
-            makeList(context, ListView.builder(
-              itemBuilder: (context, index) {
-                return Card(
-                  color: Theme.of(context).accentColor,
-                  child: Padding(
-                    padding:
-                    const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                    child: Text(selectedMeal.ingredients[index]),
-                  ),
-                );
-              },
-              itemCount: selectedMeal.ingredients.length,
-            ),),
+            makeList(
+              context,
+              ListView.builder(
+                itemBuilder: (context, index) {
+                  return Card(
+                    color: Theme.of(context).accentColor,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 5, horizontal: 10),
+                      child: Text(selectedMeal.ingredients[index]),
+                    ),
+                  );
+                },
+                itemCount: selectedMeal.ingredients.length,
+              ),
+            ),
             createTite(context, "Process"),
-            makeList(context, ListView.builder(itemBuilder: (context,index) {
-              return ListTile(
-                leading: CircleAvatar(child: Text("# ${index+1}")),
-                title: Text(selectedMeal.steps[index]),
-              );
-            },itemCount: selectedMeal.steps.length,)),
+            makeList(
+                context,
+                ListView.builder(
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      leading: CircleAvatar(child: Text("# ${index + 1}")),
+                      title: Text(selectedMeal.steps[index]),
+                    );
+                  },
+                  itemCount: selectedMeal.steps.length,
+                )),
           ],
         ),
       ),
