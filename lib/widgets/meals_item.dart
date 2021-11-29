@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:meals_app/models/meal.dart';
 import 'package:flutter/foundation.dart';
+import 'package:meals_app/screens/meal_detail_screen.dart';
 
 class MealItem extends StatelessWidget {
+  final String id;
   final String title;
   final String imageUrl;
   final int duration;
@@ -10,13 +12,19 @@ class MealItem extends StatelessWidget {
   final Affordability afford;
 
   MealItem(
-      {@required this.title,
+      {@required this.id,
+      @required this.title,
       @required this.imageUrl,
       @required this.duration,
       @required this.complex,
       @required this.afford});
 
-  void selectMeal() {}
+  void selectMeal(BuildContext context) {
+    //Navigator.of(context).push(MaterialPageRoute(builder: (ctx) {return MealDetail();}));
+
+    Navigator.of(context)
+        .pushNamed('/category-meals-details', arguments: {"id": id});
+  }
 
   String get affordibilityText {
     if (Affordability.Affordable == afford) return "Affordable";
@@ -33,7 +41,7 @@ class MealItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: selectMeal,
+      onTap: () => selectMeal(context),
       child: Card(
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
@@ -61,7 +69,7 @@ class MealItem extends StatelessWidget {
                   child: Container(
                     width: 220,
                     color: Colors.black54,
-                    padding: EdgeInsets.symmetric(vertical: 5,horizontal: 20),
+                    padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
                     child: Text(
                       title,
                       style: TextStyle(fontSize: 26, color: Colors.white),
