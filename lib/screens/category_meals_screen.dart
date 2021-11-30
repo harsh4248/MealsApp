@@ -4,21 +4,55 @@ import 'package:meals_app/models/meal.dart';
 import 'package:meals_app/dummy_data.dart';
 import 'package:meals_app/widgets/meals_item.dart';
 
-class CategoryMealsScreen extends StatelessWidget {
+class CategoryMealsScreen extends StatefulWidget {
   // final String categoryId;
   // final String categoryTitle;
   //
   // CategoryMealsScreen(this.categoryId,this.categoryTitle);
 
   @override
+  _CategoryMealsScreenState createState() => _CategoryMealsScreenState();
+}
+
+class _CategoryMealsScreenState extends State<CategoryMealsScreen> {
+  Map<String, String> argsPassed;
+  String categoryTitle;
+  String categoryId;
+  List<Meal> meals_list;
+  bool isDataInit = false;
+  @override
+  void initState() {
+
+
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    if(!isDataInit) {
+      argsPassed =
+      ModalRoute
+          .of(context)
+          .settings
+          .arguments as Map<String, String>;
+      categoryTitle = argsPassed['title'];
+      categoryId = argsPassed['id'];
+      meals_list = DUMMY_MEALS.where((meal) {
+        return meal.categories.contains(categoryId);
+      }).toList();
+      isDataInit = true;
+    }
+    super.didChangeDependencies();
+  }
+
+  void deleteMeal(String id) {
+    setState(() {
+      meals_list.removeWhere((element) => element.id == id);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    Map<String, String> argsPassed =
-        ModalRoute.of(context).settings.arguments as Map<String, String>;
-    String categoryTitle = argsPassed['title'];
-    String categoryId = argsPassed['id'];
-    final List<Meal> meals_list = DUMMY_MEALS.where((meal) {
-      return meal.categories.contains(categoryId);
-    }).toList();
     return Scaffold(
       appBar: AppBar(
         title: Text(categoryTitle),
@@ -32,6 +66,7 @@ class CategoryMealsScreen extends StatelessWidget {
             duration: meals_list[index].duration,
             afford: meals_list[index].affordability,
             complex: meals_list[index].complexity,
+            deleteMeal: deleteMeal,
           );
         },
         itemCount: meals_list.length,

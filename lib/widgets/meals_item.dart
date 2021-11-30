@@ -10,6 +10,7 @@ class MealItem extends StatelessWidget {
   final int duration;
   final Complexity complex;
   final Affordability afford;
+  final Function deleteMeal;
 
   MealItem(
       {@required this.id,
@@ -17,13 +18,17 @@ class MealItem extends StatelessWidget {
       @required this.imageUrl,
       @required this.duration,
       @required this.complex,
-      @required this.afford});
+      @required this.afford,
+      @required this.deleteMeal});
 
   void selectMeal(BuildContext context) {
     //Navigator.of(context).push(MaterialPageRoute(builder: (ctx) {return MealDetail();}));
 
-    Navigator.of(context)
-        .pushNamed('/category-meals-details', arguments: {"id": id});
+    Navigator.of(context).pushNamed('/category-meals-details',
+        arguments: {"id": id}).then((result) {
+      if(result != null)
+        deleteMeal(result);
+    });
   }
 
   String get affordibilityText {
