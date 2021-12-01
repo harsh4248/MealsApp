@@ -18,30 +18,48 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  Map<String,bool> _filters = {
-    'gluten':false,
-    'lactose':false,
-    'vegan':false,
-    "vegetarian":false,
+  Map<String, bool> _filters = {
+    'gluten': false,
+    'lactose': false,
+    'vegan': false,
+    "vegetarian": false,
   };
   List<Meal> _availableMeals = DUMMY_MEALS;
+  List<Meal> _favouriteMeals = [];
 
-  void _setFilter(Map<String,bool> data) {
+  void _setFilter(Map<String, bool> data) {
     setState(() {
       _filters = data;
       _availableMeals = DUMMY_MEALS.where((meal) {
-        if(_filters['gluten'] && !meal.isGlutenFree)
-          return false;
-        if(_filters['lactose'] && !meal.isLactoseFree)
-          return false;
-        if(_filters['vegan'] && !meal.isVegan)
-          return false;
-        if(_filters['vegetarian'] && !meal.isVegetarian)
-          return false;
+        if (_filters['gluten'] && !meal.isGlutenFree) return false;
+        if (_filters['lactose'] && !meal.isLactoseFree) return false;
+        if (_filters['vegan'] && !meal.isVegan) return false;
+        if (_filters['vegetarian'] && !meal.isVegetarian) return false;
         return true;
       }).toList();
     });
   }
+
+  void _toggleFavorite(String mealId) {
+    int existingIndex =
+        _favouriteMeals.indexWhere((element) => element.id == mealId);
+    if (existingIndex >= 0) {
+      setState(() {
+        _favouriteMeals.removeAt(existingIndex);
+      });
+    } else {
+      setState(() {
+        _favouriteMeals
+            .add(DUMMY_MEALS.firstWhere((element) => element.id == mealId));
+      });
+    }
+  }
+
+  bool isMealFavorite(String mealId) {
+    return _favouriteMeals.any((meal)=> meal.id == mealId );
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -64,10 +82,10 @@ class _MyAppState extends State<MyApp> {
       ),
       //home: TabsScreen(),
       routes: {
-        '/': (ctx) => TabsScreen(),
+        '/': (ctx) => TabsScreen(_favouriteMeals),
         '/category-meals': (ctx) => CategoryMealsScreen(_availableMeals),
-        '/category-meals-details': (ctx) => MealDetail(),
-        '/filters-screen':(ctx)=> FilterScreen(_filters,_setFilter),
+        '/category-meals-details': (ctx) => MealDetail(_toggleFavorite,isMealFavorite),
+        '/filters-screen': (ctx) => FilterScreen(_filters, _setFilter),
       },
       /*
     * onGenerateRoute: (setting) {},
@@ -87,4 +105,3 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
-

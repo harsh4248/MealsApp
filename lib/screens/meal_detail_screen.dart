@@ -4,6 +4,10 @@ import 'package:meals_app/dummy_data.dart';
 import 'package:meals_app/models/meal.dart';
 
 class MealDetail extends StatelessWidget {
+
+  final Function toggleFavorite;
+  final Function checkFavorite;
+  MealDetail(Function toggleFavorite,Function checkFavorite): this.toggleFavorite = toggleFavorite,this.checkFavorite = checkFavorite;
   Widget createTite(BuildContext context, String title) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10),
@@ -86,9 +90,10 @@ class MealDetail extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.of(context).pop(passedArgument['id']);
+          //Navigator.of(context).pop(passedArgument['id']);
+          toggleFavorite(passedArgument['id']);
         },
-        child: Icon(Icons.delete),
+        child: checkFavorite(passedArgument['id'])? Icon(Icons.favorite):Icon(Icons.favorite_border),
       ),
     );
   }
